@@ -1,110 +1,212 @@
 \section*{ARQUITECTURA DEL SISTEMA DE GESTIÓN DE CITAS MÉDICAS}
 \begin{center}
-\textit{Identificación de funciones, componentes, responsabilidades, relaciones, usuarios y base de datos}
+\textit{Definición funcional, organización de componentes, usuarios, datos y solución técnica para una clínica}
 \end{center}
 
 \section{Identificación de las funciones principales}
 
-A partir de la captura de requerimientos y de la especificación funcional, el sistema debe resolver las siguientes funciones principales:
+Una función principal representa una capacidad que el sistema debe ofrecer para resolver una necesidad de la clínica. Para identificarlas se revisaron los problemas registrados en la captura de requerimientos: uso de talonarios, citas solapadas, cobros manuales, consumo de insumos sin control y actualización tardía del inventario.
 
-\begin{itemize}
-    \item Gestionar pacientes, médicos y sus datos básicos.
-    \item Agendar citas y validar la disponibilidad del médico.
-    \item Modificar, cancelar y controlar el estado de las citas.
-    \item Registrar cobros y realizar el arqueo diario de caja.
-    \item Controlar insumos, existencias, consumos y alertas de stock mínimo.
-    \item Registrar compras, proveedores y facturas.
-    \item Controlar medicamentos sujetos a prescripción médica.
-    \item Generar reportes operativos, financieros, de productividad e inventario.
-    \item Administrar usuarios, roles, permisos y auditoría.
-\end{itemize}
+Las funciones se agrupan en cuatro procesos operativos: atención al paciente, gestión administrativa, control de recursos y supervisión. Las funciones principales son:
 
-\begin{figure}[H]
-\centering
+\begin{enumerate}[label=\textbf{F\arabic*:},leftmargin=2cm]
+    \item \textbf{Gestionar pacientes y médicos:} registrar datos, especialidades, horarios, estados y relaciones necesarias para la atención.
+    \item \textbf{Gestionar citas:} crear, consultar, modificar y cancelar citas; validar que el médico esté disponible y evitar solapamientos.
+    \item \textbf{Gestionar la atención clínica:} registrar la consulta, el procedimiento realizado, la prescripción y los insumos consumidos.
+    \item \textbf{Gestionar cobros y caja:} registrar el monto, medio de pago, estado del cobro y arqueo diario, respetando el cierre de caja.
+    \item \textbf{Gestionar inventario y compras:} controlar existencias, entradas, salidas, proveedores, facturas y alertas de stock mínimo.
+    \item \textbf{Gestionar medicamentos:} controlar medicamentos sujetos a receta y relacionarlos con la prescripción, el paciente y la atención.
+    \item \textbf{Generar reportes:} mostrar información de citas, atención, cobros, inventario y productividad para apoyar decisiones.
+    \item \textbf{Administrar seguridad:} autenticar usuarios, controlar permisos por rol y guardar la auditoría de operaciones sensibles.
+\end{enumerate}
+
+\textbf{Secuencia general de funcionamiento:}
+\begin{enumerate}[leftmargin=1.1cm]
+    \item El paciente solicita una cita y recepción registra o localiza sus datos.
+    \item El sistema consulta la agenda y rechaza los horarios que provocarían un solapamiento.
+    \item El médico atiende la cita y registra la información clínica permitida.
+    \item Recepción o caja registra el cobro y genera el comprobante.
+    \item El sistema actualiza los consumos de inventario y deja disponibles los datos para reportes.
+\end{enumerate}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw1.png}
 \end{figure}
 
 \section{Conversión de funciones en componentes}
 
-Las funciones se agrupan en componentes cohesivos para separar responsabilidades y facilitar el mantenimiento del sistema. La agenda concentra las operaciones de citas; el componente clínico administra la atención y los consumos; y los componentes financiero, de inventario y de seguridad gestionan sus respectivos dominios.
+Una función describe \textit{qué necesita hacer} la clínica; un componente describe \textit{qué parte del sistema lo hará}. La conversión consiste en agrupar funciones relacionadas en módulos con una responsabilidad clara, datos propios y operaciones coherentes.
 
-\begin{figure}[H]
-\centering
+\textbf{Criterios utilizados para formar los componentes:}
+\begin{itemize}
+    \item Alta cohesión: las operaciones del componente deben resolver un mismo objetivo.
+    \item Bajo acoplamiento: un componente debe depender de otros solo mediante servicios o datos necesarios.
+    \item Trazabilidad: cada componente debe relacionarse con uno o más requerimientos funcionales.
+    \item Seguridad: la información clínica, financiera y administrativa debe tener controles diferenciados.
+    \item Mantenibilidad: una modificación en un módulo no debe obligar a cambiar todo el sistema.
+\end{itemize}
+
+\textbf{Componentes propuestos:}
+\begin{enumerate}[label=\textbf{C\arabic*:},leftmargin=2cm]
+    \item Pacientes y médicos.
+    \item Agenda y citas.
+    \item Atención clínica.
+    \item Cobros y caja.
+    \item Inventario y compras.
+    \item Medicamentos y prescripciones.
+    \item Reportes.
+    \item Usuarios, roles y auditoría.
+\end{enumerate}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw2.png}
 \end{figure}
 
 \section{Responsabilidades de los componentes}
 
-La siguiente tabla establece qué información y operaciones administra cada componente identificado.
+La responsabilidad de un componente establece los datos que administra, las operaciones que ejecuta y los controles que debe aplicar. Esta definición evita que una misma operación sea realizada por varios módulos o que una información crítica quede sin propietario.
 
 \small
-\begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}X}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth}X}
 \toprule
 \rowcolor{azulprincipal}\textcolor{white}{Componente} & \textcolor{white}{¿De qué se encarga?}\\
 \midrule
-Gestión de pacientes y médicos & Registrar y actualizar pacientes, médicos, especialidades, horarios y datos básicos necesarios para la atención.\\
-Agenda y citas & Crear, consultar, modificar y cancelar citas; validar disponibilidad; controlar estados e historial de cambios.\\
-Atención clínica & Registrar la atención, notas clínicas permitidas, prescripciones y consumos de insumos durante procedimientos.\\
-Cobros y caja & Registrar montos, medios y estados de pago; generar el arqueo diario y bloquear modificaciones posteriores al cierre.\\
-Inventario y compras & Administrar insumos, existencias, stock mínimo, entradas, salidas, consumos, proveedores y facturas.\\
-Medicamentos y prescripciones & Vincular medicamentos sujetos a receta con el paciente, la consulta y la prescripción válida.\\
-Reportes & Generar reportes de citas, cobros, compras, productividad médica e inventario con filtros por fecha.\\
-Usuarios, roles y auditoría & Autenticar usuarios, autorizar operaciones según el rol y registrar usuario, fecha, hora y motivo de los cambios.\\
+Pacientes y médicos & Mantener expedientes administrativos, datos de contacto, especialidades, horarios, disponibilidad y estado de pacientes y profesionales. No modifica cobros ni información clínica restringida.\\
+Agenda y citas & Crear y consultar citas, validar médico, fecha y hora, impedir solapamientos, controlar estados como Programada, Confirmada, Atendida y Cancelada, y conservar el historial.\\
+Atención clínica & Registrar la atención realizada por el médico, el procedimiento, las observaciones permitidas, la prescripción y los insumos consumidos durante la consulta.\\
+Cobros y caja & Registrar monto, fecha, medio y estado de pago; asociar el cobro a la cita; realizar el arqueo; y bloquear modificaciones después del cierre autorizado.\\
+Inventario y compras & Controlar insumos, medicamentos, proveedores, facturas, entradas, salidas, consumos, stock mínimo y alertas. Nunca permite existencias negativas.\\
+Medicamentos y prescripciones & Consultar el catálogo, validar que exista prescripción y relacionar medicamento, paciente, médico y atención antes de registrar una dispensación.\\
+Reportes & Consultar datos consolidados por rango de fechas y generar reportes de agenda, ingresos, cobros, consumo, compras, existencias y productividad.\\
+Usuarios, roles y auditoría & Autenticar usuarios, aplicar permisos de Recepción, Médico, Administrador y Gerente, y registrar quién, cuándo y qué operación realizó.\\
 \bottomrule
 \end{tabularx}
 \normalsize
 
-\begin{figure}[H]
-\centering
+\textbf{Responsabilidad transversal:} todos los componentes deben validar los datos recibidos, informar errores comprensibles y registrar las operaciones sensibles conforme a las reglas de negocio.
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw3.png}
 \end{figure}
 
-\section{Relaciones entre componentes}
+\section{Identificación de las relaciones}
 
-Las relaciones se definen mediante dependencias funcionales. La agenda utiliza pacientes y médicos para crear citas; la atención clínica consulta la agenda y descuenta los consumos del inventario; los cobros se relacionan con las citas; y los reportes consultan la información consolidada sin modificarla.
+Una relación muestra cómo un componente utiliza información o servicios de otro. Las relaciones propuestas son funcionales: no significan que los módulos compartan toda su información, sino que solicitan operaciones específicas a través de interfaces definidas.
 
-\begin{figure}[H]
-\centering
+\textbf{Relaciones principales:}
+\begin{enumerate}[label=\textbf{R\arabic*:},leftmargin=2cm]
+    \item Pacientes y médicos proporciona identidades y horarios a Agenda y citas.
+    \item Agenda y citas entrega la cita programada a Atención clínica y Cobros y caja.
+    \item Atención clínica envía los consumos a Inventario y compras.
+    \item Atención clínica consulta Medicamentos y prescripciones para validar recetas.
+    \item Cobros y caja entrega movimientos financieros a Reportes.
+    \item Inventario y compras entrega existencias, compras y alertas a Reportes.
+    \item Usuarios, roles y auditoría autoriza el acceso a todos los componentes y registra acciones sensibles.
+\end{enumerate}
+
+\textbf{Reglas para mantener relaciones ordenadas:}
+\begin{itemize}
+    \item Agenda no debe modificar directamente las existencias; debe solicitarlo al componente correspondiente.
+    \item Los reportes solo consultan información y no alteran las transacciones.
+    \item La información clínica se entrega únicamente a usuarios autorizados.
+    \item La base de datos se accede mediante repositorios o servicios, no desde la interfaz.
+\end{itemize}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw4.png}
 \end{figure}
 
-\section{Usuarios del sistema}
+\section{Incorporación de los usuarios}
 
-Los usuarios y actores definidos en la captura de requerimientos interactúan con diferentes componentes según sus responsabilidades:
+Los usuarios representan personas o roles que interactúan con el sistema. No todos tienen los mismos permisos, porque una clínica debe separar las tareas de recepción, atención médica, administración y supervisión.
 
-\begin{itemize}
-    \item \textbf{Recepcionista:} registra pacientes, agenda citas, consulta disponibilidad, registra cobros y realiza el arqueo autorizado.
-    \item \textbf{Médico:} consulta su agenda, registra la atención, emite prescripciones y declara los insumos consumidos.
-    \item \textbf{Administrador:} administra usuarios, médicos, inventario, compras, parámetros y reportes.
-    \item \textbf{Gerente general:} consulta información consolidada y reportes para supervisar la clínica.
-    \item \textbf{Paciente:} proporciona sus datos, solicita citas y recibe confirmaciones o avisos.
-\end{itemize}
+\begin{enumerate}[label=\textbf{Usuario \arabic*:},leftmargin=2.4cm]
+    \item \textbf{Paciente:} solicita la cita, proporciona datos, recibe confirmaciones y consulta la información que la clínica le autorice.
+    \item \textbf{Recepcionista:} registra pacientes, agenda y modifica citas, consulta disponibilidad, registra cobros autorizados y realiza el arqueo operativo.
+    \item \textbf{Médico:} consulta su agenda, registra la atención, emite prescripciones y declara los insumos utilizados.
+    \item \textbf{Administrador:} administra catálogos, usuarios, permisos, inventario, compras, parámetros y reportes.
+    \item \textbf{Gerente general:} consulta reportes consolidados, revisa indicadores y supervisa ingresos, agenda e inventario sin modificar registros clínicos.
+\end{enumerate}
 
-\begin{figure}[H]
-\centering
+\textbf{Flujo básico de permisos:}
+\begin{enumerate}[leftmargin=1.1cm]
+    \item El usuario ingresa sus credenciales.
+    \item El sistema identifica su rol.
+    \item El sistema muestra únicamente las operaciones autorizadas.
+    \item Cada operación sensible queda registrada en auditoría.
+    \item Si el permiso no existe, la operación se rechaza sin modificar datos.
+\end{enumerate}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw5.png}
 \end{figure}
 
-\section{Base de datos del sistema}
+\section{Incorporación de la base de datos}
 
-La base de datos debe centralizar la información y conservar la trazabilidad. Como mínimo, se identifican las entidades Paciente, Médico, Usuario, Cita, Atención, Prescripción, Medicamento, Insumo, Movimiento de inventario, Proveedor, Compra, Cobro y Auditoría. Las relaciones deben impedir citas solapadas, controlar existencias no negativas y vincular cobros y prescripciones con la atención correspondiente.
+La base de datos es el componente que conserva la información operativa y permite relacionar pacientes, citas, atenciones, cobros e inventario. Debe garantizar integridad, confidencialidad y trazabilidad.
 
-\begin{figure}[H]
-\centering
+\textbf{Entidades principales:}
+\begin{itemize}
+    \item \textbf{Paciente y Médico:} datos administrativos y profesionales.
+    \item \textbf{Usuario y Rol:} credenciales y permisos.
+    \item \textbf{Cita:} fecha, hora, médico, paciente, servicio y estado.
+    \item \textbf{Atención y Prescripción:} resultado de la consulta y medicamentos prescritos.
+    \item \textbf{Medicamento e Insumo:} catálogo, existencia y stock mínimo.
+    \item \textbf{MovimientoInventario:} entradas, salidas y consumos.
+    \item \textbf{Proveedor y Compra:} abastecimiento y facturas.
+    \item \textbf{Cobro:} monto, medio de pago, estado y cierre de caja.
+    \item \textbf{Auditoría:} usuario, fecha, operación, entidad afectada y resultado.
+\end{itemize}
+
+\textbf{Controles mínimos de integridad:}
+\begin{enumerate}[leftmargin=1.1cm]
+    \item No permitir dos citas activas para el mismo médico, fecha y horario.
+    \item No permitir cobros sin una cita o servicio asociado.
+    \item No permitir medicamentos sujetos a receta sin prescripción válida.
+    \item No permitir existencias negativas en insumos o medicamentos.
+    \item Mantener claves y relaciones entre paciente, cita, atención y cobro.
+    \item Respaldar la información y restringir las consultas clínicas por rol.
+\end{enumerate}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw6.png}
 \end{figure}
 
-\section{Arquitectura del sistema}
+\section{Construcción de la arquitectura del sistema}
 
-Se propone una arquitectura por capas. La capa de presentación atiende las operaciones de los usuarios; la capa de aplicación coordina los casos de uso y aplica las reglas de negocio; la capa de dominio concentra las entidades y validaciones; y la capa de datos persiste la información. Los servicios transversales de autenticación, auditoría, reportes y respaldo apoyan a todas las capas.
+La arquitectura propuesta organiza el sistema en capas para separar la interfaz, los casos de uso, las reglas de negocio y la persistencia. La separación permite que la clínica pueda cambiar la interfaz sin alterar las reglas que protegen las citas, los cobros y el inventario.
 
-Esta separación permite modificar la interfaz sin alterar las reglas de negocio, facilita las pruebas y protege la información clínica y administrativa mediante controles de acceso.
+\textbf{Capas de la solución:}
+\begin{enumerate}[label=\textbf{Capa \arabic*:},leftmargin=2cm]
+    \item \textbf{Presentación:} pantallas web o responsive para recepción, médicos, administración y gerencia.
+    \item \textbf{Aplicación:} coordina los casos de uso: agendar cita, registrar atención, cobrar, actualizar inventario y consultar reportes.
+    \item \textbf{Dominio:} contiene entidades y reglas como no solapar citas, exigir receta, cerrar caja y evitar stock negativo.
+    \item \textbf{Persistencia:} repositorios y servicios que guardan y consultan datos sin exponer directamente la base de datos a la interfaz.
+    \item \textbf{Infraestructura transversal:} autenticación, autorización, auditoría, generación de comprobantes, notificaciones y respaldos.
+\end{enumerate}
 
-\begin{figure}[H]
-\centering
+\textbf{Flujo de una operación ejemplo — agendar una cita:}
+\begin{enumerate}[leftmargin=1.1cm]
+    \item Recepción captura paciente, médico, fecha y hora en la interfaz.
+    \item La capa de aplicación solicita al dominio validar disponibilidad.
+    \item El dominio aplica la regla de no solapamiento.
+    \item Persistencia consulta y guarda la cita si la validación es correcta.
+    \item Infraestructura registra la auditoría y la aplicación devuelve la confirmación.
+\end{enumerate}
+
+\textbf{Beneficios de la arquitectura:}
+\begin{itemize}
+    \item Reduce el acoplamiento entre módulos.
+    \item Facilita las pruebas de cada regla de negocio.
+    \item Protege la información clínica y financiera.
+    \item Permite añadir recordatorios, portal del paciente o facturación electrónica en el futuro.
+    \item Mantiene trazabilidad entre requerimientos, componentes, datos y usuarios.
+\end{itemize}
+
+\begin{figure}[H]\centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw7.png}
 \end{figure}
 
 \subsection*{Conclusión de la propuesta}
 
-La solución transforma el proceso manual identificado en la entrevista en una arquitectura modular y trazable. Los componentes propuestos cubren las funciones prioritarias del proyecto, incorporan explícitamente a los usuarios y a la base de datos, y permiten implementar gradualmente la agenda, la atención clínica, los cobros, el inventario y los reportes.
+La arquitectura convierte las necesidades de la clínica en una solución modular: los usuarios realizan operaciones según su rol, los componentes concentran responsabilidades, las relaciones siguen un flujo controlado y la base de datos conserva la información con reglas de integridad. El resultado es una base técnica para implementar primero la agenda, después la atención y los cobros, y finalmente el inventario, los reportes y las funciones de supervisión.
