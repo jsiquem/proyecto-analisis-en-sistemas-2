@@ -1,0 +1,91 @@
+\documentclass[12pt,a4paper]{article}
+
+% Codificación y lenguaje
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+
+% Diseño
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+% Colores tomados de las plantillas originales
+\definecolor{azulplantilla}{HTML}{2F75B5}
+\definecolor{azuloscuro}{HTML}{1F4E79}
+\definecolor{gristexto}{HTML}{666666}
+\definecolor{grisclaro}{HTML}{F2F2F2}
+\definecolor{azulclaro}{HTML}{D9EAF7}
+% Alias conservados para los módulos DCR y ERS
+\colorlet{azulprincipal}{azulplantilla}
+\colorlet{morado}{azuloscuro}
+\colorlet{rojo}{azuloscuro}
+
+\hypersetup{colorlinks=true,linkcolor=azuloscuro,urlcolor=azulplantilla,pdftitle={Sistema de gestión de citas médicas}}
+\setstretch{1.08}
+\setlist{itemsep=2pt,topsep=3pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\rf}[1]{\textbf{#1}}
+\newcommand{\nota}[1]{\begin{center}\colorbox{azulclaro}{\parbox{0.92\linewidth}{#1}}\end{center}}
+
+% Encabezados en azul institucional, como en las plantillas
+\titleformat{\section}{\sffamily\color{azuloscuro}\Large\bfseries}{\thesection.}{0.5em}{}[\color{azulplantilla}\titlerule]
+\titleformat{\subsection}{\sffamily\color{azuloscuro}\large\bfseries}{\thesubsection.}{0.5em}{}[\color{azulplantilla}\titlerule]
+\titleformat{\subsubsection}{\sffamily\color{black}\normalsize\bfseries}{\thesubsubsection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus .5ex minus .2ex}{1.0ex}
+\titlespacing*{\subsection}{0pt}{1.7ex plus .4ex minus .2ex}{0.8ex}
+
+\setlength{\headheight}{24pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textcolor{azuloscuro}{Sistema de gestión de citas médicas}}
+\rhead{\small\textcolor{gristexto}{Análisis de Sistemas}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{azulplantilla}\leaders\hrule height \headrulewidth\hfill}}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\sffamily\color{azulplantilla}\Huge\bfseries PLANTILLA DE CAPTURA Y ESPECIFICACIÓN\\[0.2em] DE REQUERIMIENTOS\par}
+\vspace{0.35cm}
+{\itshape\color{gristexto}\large Sistema de gestión de citas médicas\par}
+\vspace{1.5cm}
+\rule{0.82\linewidth}{1pt}\par
+\vspace{1.2cm}
+{\sffamily\color{azuloscuro}\Large Documento modular del proyecto\par}
+\vfill
+\begin{tabular}{rl}
+\textbf{Analista líder:} & Juan Fernando Sique Muralles\\
+\textbf{Stakeholder principal:} & Dra. Elena Ramos, Gerente General\\
+\textbf{Sesión de referencia:} & SES-001\\
+\textbf{Fecha:} & 31 de julio de 2026\\
+\end{tabular}
+\vfill
+{\sffamily\color{azuloscuro}\large Documento técnico y de levantamiento de información\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% Se puede comentar cualquiera de estas líneas para imprimir solo un módulo.
+\input{DCR_citas_medicas}
+\clearpage
+\input{ERS_citas_medicas}
+
+\end{document}

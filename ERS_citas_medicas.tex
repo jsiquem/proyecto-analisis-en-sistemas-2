@@ -1,0 +1,127 @@
+\section{Especificación de requerimientos de software (ERS)}
+\label{sec:ers}
+
+\nota{Este documento constituye una línea base inicial de requerimientos. Los requisitos deben validarse con los usuarios antes de iniciar el diseño detallado y el desarrollo.}
+
+\subsection{Control de versiones}
+
+\begin{tabularx}{\textwidth}{p{0.14\textwidth}p{0.18\textwidth}Yp{0.22\textwidth}}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Versión} & \textcolor{white}{Fecha} & \textcolor{white}{Descripción del cambio} & \textcolor{white}{Autor}\\
+\midrule
+0.1 & 31/07/2026 & Línea base a partir de la sesión de captura SES-001. & Analista de Sistemas\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Alcance del sistema}
+
+El Sistema de gestión de citas médicas permitirá administrar pacientes, médicos, agenda, citas, cobros, insumos, compras, medicamentos sujetos a prescripción y reportes. El sistema busca sustituir los talonarios y archivos dispersos por un registro centralizado, trazable y protegido mediante roles.
+
+\subsection{Actores y roles}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Rol} & \textcolor{white}{Permisos y responsabilidades principales}\\
+\midrule
+Recepcionista & Registrar pacientes, agendar, modificar y cancelar citas, consultar disponibilidad, registrar cobros y realizar el arqueo autorizado.\\
+Médico & Consultar su agenda, registrar la atención, indicar diagnóstico o notas permitidas y declarar los insumos utilizados.\\
+Administrador & Gestionar usuarios, médicos, especialidades, insumos, compras, parámetros y reportes.\\
+Gerente general & Consultar reportes consolidados de citas, finanzas, compras, productividad e inventario.\\
+Paciente & Proporcionar sus datos, solicitar una cita y recibir confirmaciones o avisos.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Requerimientos funcionales (RF)}
+
+\begin{longtable}{>{\bfseries}p{0.12\textwidth}p{0.20\textwidth}p{0.38\textwidth}p{0.23\textwidth}}
+\caption{Requerimientos funcionales}\label{tab:rf}\\
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Nombre} & \textcolor{white}{Descripción técnica rigurosa} & \textcolor{white}{Criterio de aceptación}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Nombre} & \textcolor{white}{Descripción técnica rigurosa} & \textcolor{white}{Criterio de aceptación}\\
+\midrule
+\endhead
+\rf{RF-001} & Registrar pacientes & El sistema debe permitir crear, consultar y actualizar los datos básicos de un paciente, incluyendo un identificador único. & Se puede crear un paciente y recuperar sus datos por nombre o identificador.\\
+\rf{RF-002} & Gestionar médicos & El sistema debe permitir registrar médicos, especialidades y horarios de atención. & Un administrador puede crear, editar, activar o desactivar un médico.\\
+\rf{RF-003} & Agendar citas & El sistema debe permitir agendar una cita seleccionando paciente, médico, fecha, hora, servicio y motivo. & La cita queda almacenada y aparece en la agenda del médico y la recepción.\\
+\rf{RF-004} & Validar disponibilidad & El sistema debe comprobar que no exista otra cita activa para el mismo médico en la misma fecha y hora. & Al intentar solapar una cita, el sistema rechaza la operación y muestra una explicación.\\
+\rf{RF-005} & Modificar y cancelar citas & El sistema debe permitir modificar o cancelar una cita según permisos y conservar el historial del cambio. & El estado y la información de auditoría se actualizan correctamente.\\
+\rf{RF-006} & Gestionar estados de cita & El sistema debe permitir marcar citas como programada, atendida, cancelada, ausente o modificada. & Cada cambio muestra usuario, fecha y estado nuevo.\\
+\rf{RF-007} & Registrar cobros & El sistema debe permitir registrar el cobro de una cita, su monto, medio de pago y estado. & El cobro aparece en la lista diaria y puede incluirse en el arqueo.\\
+\rf{RF-008} & Realizar arqueo diario & El sistema debe permitir comparar los cobros registrados con el efectivo recaudado y cerrar la caja. & Al cerrar el arqueo se genera un resumen y se bloquean modificaciones no autorizadas.\\
+\rf{RF-009} & Controlar insumos & El sistema debe permitir registrar artículos, stock actual, stock mínimo, entradas, salidas y consumos. & Se muestra el inventario actualizado y se generan alertas de stock mínimo.\\
+\rf{RF-010} & Registrar compras & El sistema debe permitir registrar proveedores, facturas, artículos y cantidades compradas. & Una compra incrementa las existencias y queda asociada a una factura.\\
+\rf{RF-011} & Controlar medicamentos & El sistema debe vincular los productos medicinales sujetos a prescripción con la consulta, el paciente y la prescripción correspondiente. & No se registra la venta o dispensación sin una prescripción válida asociada al paciente.\\
+\rf{RF-012} & Registrar consumo clínico & El médico debe poder declarar los insumos consumidos durante una consulta o procedimiento. & Al cerrar una atención, el consumo queda registrado y descuenta el inventario.\\
+\rf{RF-013} & Generar reportes & El sistema debe generar reportes diarios de citas, financieros, de compras, productividad médica e inventario. & Cada reporte permite filtrar por fecha y exportar o imprimir sus resultados.\\
+\rf{RF-014} & Administrar usuarios y roles & El sistema debe permitir administrar cuentas y restringir las operaciones según el rol asignado. & Un usuario solo puede acceder a las funciones autorizadas.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Requerimientos no funcionales (RNF)}
+
+\begin{longtable}{>{\bfseries}p{0.13\textwidth}p{0.18\textwidth}p{0.38\textwidth}p{0.23\textwidth}}
+\caption{Requerimientos no funcionales}\label{tab:rnf}\\
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Categoría} & \textcolor{white}{Especificación del atributo} & \textcolor{white}{Métrica de verificación}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Categoría} & \textcolor{white}{Especificación del atributo} & \textcolor{white}{Métrica de verificación}\\
+\midrule
+\endhead
+\rf{RNF-001} & Seguridad & La modificación de stock mínimo y parámetros críticos queda restringida a Administrador o Gerente. & Prueba de roles: un usuario no autorizado recibe acceso denegado.\\
+\rf{RNF-002} & Rendimiento & Las consultas de agenda, pacientes e inventario deben responder en un máximo de 2 segundos bajo la carga esperada de al menos 200 pacientes semanales. & Prueba con al menos 200 pacientes semanales y concurrencia definida.\\
+\rf{RNF-003} & Disponibilidad & El sistema debe estar disponible durante el horario de atención y contar con recuperación ante fallos. & Disponibilidad objetivo mínima del 99\% durante el horario operativo.\\
+\rf{RNF-004} & Usabilidad & La interfaz debe ser comprensible para recepción, médicos y administración, incluyendo usuarios con poca experiencia informática. & Prueba de uso con representantes de cada rol y registro de errores.\\
+\rf{RNF-005} & Confidencialidad & Los datos personales y clínicos deben transmitirse y almacenarse con controles de acceso. & Revisión de permisos, cifrado en tránsito y pruebas de acceso indebido.\\
+\rf{RNF-006} & Integridad & Las operaciones de cobro, inventario y agenda deben conservar consistencia aun cuando ocurra un error. & Pruebas de transacción, recuperación y auditoría.\\
+\rf{RNF-007} & Respaldo & La información debe respaldarse con una frecuencia definida y poder restaurarse. & Restauración de una copia de seguridad en un entorno de prueba.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Reglas de negocio y restricciones}
+
+\subsubsection{RN-001 — Exclusividad de agenda}
+Un médico no puede tener más de una cita asignada dentro del mismo intervalo de tiempo.
+
+\subsubsection{RN-002 — Control inviolable de stock mínimo}
+Ningún insumo puede registrar existencias negativas. Cuando un artículo alcanza su stock mínimo, el sistema debe emitir una alerta de reabastecimiento.
+
+\subsubsection{RN-003 — Bloqueo posterior al cierre de caja}
+Una vez que el administrador o gerente cierra el arqueo diario, la recepcionista no puede editar, anular ni agregar cobros correspondientes a esa fecha sin autorización.
+
+\subsubsection{RN-004 — Obligatoriedad de prescripción médica}
+Los medicamentos catalogados como sujetos a receta solo pueden asociarse a un paciente y cobro cuando existe una prescripción emitida por el médico tratante.
+
+\subsubsection{RN-005 — Cierre de cita con declaración de insumos}
+Una cita de procedimiento, como curación de heridas o vendaje, requiere registrar el tipo y cantidad de materiales consumidos antes de marcarse como atendida.
+
+\subsubsection{RN-006 — Trazabilidad de cambios}
+Toda modificación de agenda, cobro, inventario o expediente debe conservar usuario, fecha, hora y motivo cuando corresponda.
+
+\subsection{Matriz breve de trazabilidad}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.20\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Necesidad} & \textcolor{white}{Requerimientos relacionados}\\
+\midrule
+Evitar citas solapadas & RF-003, RF-004, RF-005 y RN-001.\\
+Digitalizar cobros y arqueos & RF-007, RF-008, RN-003 y RNF-006.\\
+Reducir faltantes de insumos & RF-009, RF-010, RF-012, RN-002 y RN-005.\\
+Obtener información gerencial & RF-013, RNF-001, RNF-005 y RNF-007.\\
+Proteger la información & RF-014, RNF-001, RNF-005 y RNF-006.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Glosario inicial}
+
+\begin{description}[style=nextline,leftmargin=0pt]
+    \item[Solapamiento de horarios:] Conflicto que ocurre cuando se asignan dos o más pacientes al mismo médico dentro del mismo intervalo.
+    \item[Talonario de recibos:] Libreta física autocopiativa utilizada en recepción para anotar cobros.
+    \item[Insumos médicos:] Artículos consumibles utilizados durante la atención, como gasas, vendajes, apósitos y guantes.
+    \item[Arqueo manual:] Conteo físico del dinero cobrado comparado con las copias del talonario.
+    \item[Compra bajo pedido:] Reabastecimiento que se realiza después de que el médico notifica que un producto se agotó o está próximo a agotarse.
+\end{description}

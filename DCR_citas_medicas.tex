@@ -1,0 +1,196 @@
+\section{Documento de captura y elicitación de requerimientos}
+\label{sec:dcr}
+
+\subsection{Información de la sesión / entrevista}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Campo} & \textcolor{white}{Detalle / registro del analista}\\
+\midrule
+Fecha de la sesión & 31 de julio de 2026\\
+Analista líder & Juan Fernando Sique Muralles\\
+Stakeholder / cliente & Dra. Elena Ramos, Gerente General\\
+Proyecto / sistema & Sistema de gestión de citas médicas\\
+Objetivo de la reunión & Detallar las solicitudes requeridas para el sistema de gestión de citas médicas.\\
+Código de sesión & SES-001\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Contexto de la entrevista}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Elemento} & \textcolor{white}{Información}\\
+\midrule
+Entrevistador & Analista de Sistemas\\
+Entrevistada & Dra. Elena Ramos, Gerente General\\
+Duración & Aproximadamente 10 minutos\\
+Contexto & Entrevista para detallar las solicitudes del sistema de gestión de citas médicas.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Información obtenida durante la entrevista}
+
+\subsubsection{Servicios y productos}
+La clínica maneja consultas de medicina general, consultas externas y cuidados de heridas. También comercializa productos medicinales bajo prescripción médica, materiales de vendaje y otros insumos utilizados durante la atención.
+
+\subsubsection{Usuarios y volumen de atención}
+Actualmente participan una recepcionista, tres médicos y un administrador. La clínica atiende aproximadamente 200 pacientes por semana.
+
+\subsubsection{Registro actual de cobros y compras}
+El proceso actual es principalmente manual. Los cobros de las citas se anotan en un talonario de recibos de papel en recepción. Al finalizar el día, la recepcionista realiza un arqueo manual. Las facturas de compras de materiales e insumos se guardan físicamente en una carpeta y el administrador actualiza un archivo de Excel cuando dispone de tiempo.
+
+\subsubsection{Control actual de agenda e insumos}
+Las compras se realizan bajo pedido. El médico informa al final del día los materiales consumidos y la clínica comprueba la información con las facturas. Cuando el inventario disminuye, se solicita una nueva compra.
+
+\subsubsection{Problemas actuales}
+\begin{enumerate}
+    \item Se pueden asignar dos pacientes al mismo médico en el mismo horario.
+    \item La compra de insumos puede realizarse demasiado tarde.
+    \item El seguimiento de las citas es insuficiente.
+    \item Algunos pacientes no asisten a la hora adecuada.
+    \item Los cobros y el arqueo dependen de registros manuales.
+    \item La actualización del inventario se realiza con retraso.
+\end{enumerate}
+
+\subsubsection{Reportes prioritarios}
+\begin{enumerate}
+    \item Reporte diario de citas: atendidas, canceladas, ausentes y modificadas.
+    \item Reporte financiero y de compras: citas cobradas y compras de insumos.
+    \item Reporte de productividad médica: pacientes atendidos e ingresos generados por especialista al mes.
+    \item Reporte de control de inventario: artículos médicos utilizados y existencias disponibles.
+\end{enumerate}
+
+\subsection{Transcripción de necesidades del usuario}
+
+\begin{longtable}{>{\bfseries}p{0.18\textwidth}p{0.74\textwidth}}
+\caption{Necesidades expresadas por los participantes}\label{tab:necesidades}\\
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Referencia} & \textcolor{white}{Necesidad o problema expresado}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Referencia} & \textcolor{white}{Necesidad o problema expresado}\\
+\midrule
+\endhead
+GER-01 & ``Al usar los talonarios de papel hay ocasiones en que la recepcionista coloca a un mismo médico para atender dos pacientes al mismo horario. Necesitamos que el sistema impida solapar citas.''\\
+GER-02 & ``Los cobros los anotamos en un talonario de recibos impresos y al final del día hacemos el arqueo a mano. Además, los pacientes se confunden o no asisten a la hora adecuada porque no hay un control riguroso de seguimiento.''\\
+MED-03 (necesidad preliminar del rol médico) & ``Pasamos un informe al final del día de lo que gastamos en vendajes o gasas para curaciones. A veces se compran insumos de manera tardía y nos quedamos sin material para trabajar.''\\
+ADM-04 (necesidad preliminar del rol administrativo) & ``Guardo las facturas de compras físicas en una carpeta y actualizo el Excel de inventario solo cuando tengo tiempo, lo que genera retrasos y descontrol en la información de existencias.''\\
+\bottomrule
+\end{longtable}
+
+\subsection{Procesos actuales del negocio (AS-IS)}
+
+\begin{enumerate}
+    \item La recepcionista atiende al paciente presencialmente o por teléfono y anota la cita en un talonario físico.
+    \item El paciente asiste a su consulta o procedimiento y la recepcionista cobra en efectivo, emitiendo un recibo de papel.
+    \item El médico utiliza los insumos de su consultorio y entrega un informe verbal o manuscrito al final de la jornada.
+    \item El administrador recibe las facturas físicas de compra, las guarda en una carpeta y actualiza un archivo de Excel de forma extemporánea.
+    \item Al final de la jornada, la recepcionista realiza un arqueo manual comparando el efectivo recaudado con las copias del talonario.
+\end{enumerate}
+
+\subsection{Actores involucrados}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Actor} & \textcolor{white}{Responsabilidad o interés}\\
+\midrule
+Recepcionista & Registra, modifica y da seguimiento a las citas; realiza cobros y arqueos.\\
+Médico & Atiende al paciente, consulta su agenda e informa los insumos utilizados.\\
+Administrador & Gestiona usuarios, inventario, compras, reportes y parámetros del sistema.\\
+Paciente & Solicita una cita, recibe atención y puede cancelar o modificar su cita.\\
+Gerente general & Consulta información consolidada y reportes para supervisar la clínica.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Necesidades identificadas}
+
+\begin{enumerate}
+    \item Evitar el solapamiento de citas para un mismo médico.
+    \item Centralizar la agenda y permitir consultar la disponibilidad en tiempo real.
+    \item Registrar cobros y estados de pago de forma digital.
+    \item Dar seguimiento a citas atendidas, canceladas, ausentes y modificadas.
+    \item Controlar existencias y consumos de insumos médicos.
+    \item Registrar compras y conservar la trazabilidad de las facturas.
+    \item Generar reportes diarios, financieros, de productividad e inventario.
+    \item Proteger la información clínica y administrativa mediante roles.
+\end{enumerate}
+
+\subsection{Requerimientos preliminares}
+
+\begin{longtable}{>{\bfseries}p{0.14\textwidth}p{0.28\textwidth}p{0.47\textwidth}}
+\caption{Requerimientos preliminares identificados}\label{tab:preliminares}\\
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Nombre} & \textcolor{white}{Descripción preliminar}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{ID} & \textcolor{white}{Nombre} & \textcolor{white}{Descripción preliminar}\\
+\midrule
+\endhead
+RP-001 & Registrar pacientes & El sistema debe permitir crear y actualizar el expediente básico del paciente.\\
+RP-002 & Gestionar médicos & El sistema debe permitir registrar médicos, especialidades y horarios de atención.\\
+RP-003 & Agendar citas & El sistema debe permitir seleccionar paciente, médico, fecha y hora para crear una cita.\\
+RP-004 & Validar disponibilidad & El sistema debe impedir dos citas del mismo médico en la misma fecha y hora.\\
+RP-005 & Modificar o cancelar citas & El sistema debe registrar cambios y cancelaciones conservando su historial.\\
+RP-006 & Controlar estados de cita & El sistema debe manejar los estados atendida, cancelada, ausente y modificada.\\
+RP-007 & Registrar cobros & El sistema debe registrar el monto, medio de pago, fecha y estado del cobro.\\
+RP-008 & Gestionar insumos & El sistema debe registrar artículos médicos, existencias, consumos y stock mínimo.\\
+RP-009 & Registrar compras & El sistema debe permitir registrar proveedores, facturas, artículos y cantidades compradas.\\
+RP-010 & Controlar medicamentos prescritos & El sistema debe vincular medicamentos sujetos a receta con el paciente y la consulta correspondiente.\\
+RP-011 & Generar reportes & El sistema debe generar reportes de citas, finanzas, productividad médica e inventario.\\
+RP-012 & Administrar usuarios y roles & El sistema debe restringir las funciones según el rol del usuario.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Reglas de negocio preliminares}
+
+\begin{enumerate}
+    \item \textbf{RN-001 — Exclusividad de agenda:} un médico no puede tener más de una cita en el mismo intervalo de tiempo.
+    \item \textbf{RN-002 — Stock no negativo:} ningún insumo puede quedar con una existencia menor que cero.
+    \item \textbf{RN-003 — Stock mínimo:} cuando un artículo alcance su stock mínimo, el sistema debe generar una alerta de reabastecimiento.
+    \item \textbf{RN-004 — Prescripción obligatoria:} los medicamentos sujetos a receta solo pueden asociarse a una venta o atención cuando exista una prescripción válida.
+    \item \textbf{RN-005 — Cierre con consumo:} una cita de procedimiento no puede marcarse como atendida sin registrar los insumos utilizados.
+    \item \textbf{RN-006 — Integridad de caja:} una vez cerrado el arqueo diario, la recepcionista no puede modificar los cobros de esa fecha sin autorización administrativa.
+    \item \textbf{RN-007 — Trazabilidad:} toda modificación de cita, inventario o cobro debe conservar usuario, fecha y motivo del cambio.
+\end{enumerate}
+
+\nota{Las necesidades MED-03 y ADM-04 se registran como necesidades preliminares de los roles médico y administrativo; deben validarse en entrevistas específicas antes de convertirlas en una línea base definitiva.}
+
+\subsection{Observaciones del analista}
+
+\subsubsection{Entrevista}
+La entrevista permitió identificar que los problemas principales se originan en registros manuales, ausencia de validación automática de agenda y falta de integración entre citas, cobros e inventario.
+
+\subsubsection{Cuestionarios}
+Como actividad complementaria se recomienda aplicar un cuestionario breve a la recepcionista, médicos y administrador para validar la frecuencia de cancelaciones, ausencias, modificaciones de agenda, consumos de insumos y diferencias de caja.
+
+\subsubsection{Observación}
+La observación del proceso actual debería confirmar el uso del talonario, el flujo de efectivo, la actualización del Excel, el registro de consumos y la comunicación entre recepción, médicos y administración. Estas observaciones deben convertirse en evidencia durante la siguiente sesión de levantamiento.
+
+\subsection{Riesgos identificados}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}Y}
+\toprule
+\rowcolor{azulprincipal}\textcolor{white}{Riesgo} & \textcolor{white}{Impacto y tratamiento propuesto}\\
+\midrule
+Migración de datos manuales & Los datos históricos pueden contener errores. Se recomienda validar una muestra antes de cargarla.\\
+Resistencia al cambio & El personal puede continuar usando papel. Se recomienda capacitación y un período de transición controlado.\\
+Protección de datos personales & La información de pacientes requiere controles de acceso, respaldo y auditoría.\\
+Conectividad o indisponibilidad & La caída del sistema puede detener la agenda. Se recomienda respaldo, monitoreo y procedimiento de contingencia.\\
+Inventario desactualizado & Los consumos no registrados generan alertas incorrectas. Se debe exigir el registro al cerrar la atención.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Evidencias propuestas}
+
+\begin{itemize}
+    \item Fotografía simulada del talonario de recibos y del formato de agenda manual.
+    \item Captura simulada del archivo de Excel usado para inventario.
+    \item Diagrama sencillo del proceso actual AS-IS.
+    \item Formato de ejemplo para el reporte diario de citas.
+    \item Formato de ejemplo para el registro de consumo de insumos.
+\end{itemize}
+
+\nota{Las evidencias anteriores deben identificarse como simuladas si no se cuenta con fotografías o capturas reales.}
