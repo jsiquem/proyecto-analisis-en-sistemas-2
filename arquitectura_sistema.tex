@@ -5,7 +5,7 @@
 
 \section{Identificación de las funciones principales}
 
-Una función principal representa una capacidad que el sistema debe ofrecer para resolver una necesidad de la clínica. Para identificarlas se revisaron los problemas registrados en la captura de requerimientos: uso de talonarios, citas solapadas, cobros manuales, consumo de insumos sin control y actualización tardía del inventario.
+ Se identifican las funciones principales por medio de los problemas registrados en la captura de requerimientos: uso de talonarios, citas solapadas, cobros manuales, consumo de insumos sin control y actualización tardía del inventario.
 
 Las funciones se agrupan en cuatro procesos operativos: atención al paciente, gestión administrativa, control de recursos y supervisión. Las funciones principales son:
 
@@ -35,8 +35,6 @@ Las funciones se agrupan en cuatro procesos operativos: atención al paciente, g
 
 \section{Conversión de funciones en componentes}
 
-Una función describe \textit{qué necesita hacer} la clínica; un componente describe \textit{qué parte del sistema lo hará}. La conversión consiste en agrupar funciones relacionadas en módulos con una responsabilidad clara, datos propios y operaciones coherentes.
-
 \textbf{Criterios utilizados para formar los componentes:}
 \begin{itemize}
     \item Alta cohesión: las operaciones del componente deben resolver un mismo objetivo.
@@ -63,8 +61,6 @@ Una función describe \textit{qué necesita hacer} la clínica; un componente de
 \end{figure}
 
 \section{Responsabilidades de los componentes}
-
-La responsabilidad de un componente establece los datos que administra, las operaciones que ejecuta y los controles que debe aplicar. Esta definición evita que una misma operación sea realizada por varios módulos o que una información crítica quede sin propietario.
 
 \small
 \begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth}X}
