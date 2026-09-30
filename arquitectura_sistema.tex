@@ -19,22 +19,18 @@ A partir de la captura de requerimientos y de la especificación funcional, el s
     \item Administrar usuarios, roles, permisos y auditoría.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw1.png}
-\caption{Funciones principales del sistema.}
-\label{fig:funciones-principales}
 \end{figure}
 
 \section{Conversión de funciones en componentes}
 
 Las funciones se agrupan en componentes cohesivos para separar responsabilidades y facilitar el mantenimiento del sistema. La agenda concentra las operaciones de citas; el componente clínico administra la atención y los consumos; y los componentes financiero, de inventario y de seguridad gestionan sus respectivos dominios.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw2.png}
-\caption{Correspondencia entre funciones y componentes del sistema.}
-\label{fig:funciones-componentes}
 \end{figure}
 
 \section{Responsabilidades de los componentes}
@@ -58,22 +54,18 @@ Usuarios, roles y auditoría & Autenticar usuarios, autorizar operaciones según
 \end{tabularx}
 \normalsize
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw3.png}
-\caption{Componentes y responsabilidades principales.}
-\label{fig:responsabilidades}
 \end{figure}
 
 \section{Relaciones entre componentes}
 
 Las relaciones se definen mediante dependencias funcionales. La agenda utiliza pacientes y médicos para crear citas; la atención clínica consulta la agenda y descuenta los consumos del inventario; los cobros se relacionan con las citas; y los reportes consultan la información consolidada sin modificarla.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw4.png}
-\caption{Relaciones y dependencias entre componentes.}
-\label{fig:relaciones}
 \end{figure}
 
 \section{Usuarios del sistema}
@@ -88,22 +80,18 @@ Los usuarios y actores definidos en la captura de requerimientos interactúan co
     \item \textbf{Paciente:} proporciona sus datos, solicita citas y recibe confirmaciones o avisos.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw5.png}
-\caption{Usuarios y componentes con los que interactúan.}
-\label{fig:usuarios}
 \end{figure}
 
 \section{Base de datos del sistema}
 
 La base de datos debe centralizar la información y conservar la trazabilidad. Como mínimo, se identifican las entidades Paciente, Médico, Usuario, Cita, Atención, Prescripción, Medicamento, Insumo, Movimiento de inventario, Proveedor, Compra, Cobro y Auditoría. Las relaciones deben impedir citas solapadas, controlar existencias no negativas y vincular cobros y prescripciones con la atención correspondiente.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw6.png}
-\caption{Base de datos conceptual y sus relaciones principales.}
-\label{fig:base-datos}
 \end{figure}
 
 \section{Arquitectura del sistema}
@@ -112,11 +100,9 @@ Se propone una arquitectura por capas. La capa de presentación atiende las oper
 
 Esta separación permite modificar la interfaz sin alterar las reglas de negocio, facilita las pruebas y protege la información clínica y administrativa mediante controles de acceso.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=0.52\textheight,keepaspectratio]{diagramas/draw7.png}
-\caption{Arquitectura propuesta del sistema de gestión de citas médicas.}
-\label{fig:arquitectura}
 \end{figure}
 
 \subsection*{Conclusión de la propuesta}
