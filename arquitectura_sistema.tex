@@ -10,7 +10,8 @@
 Las funciones se agrupan en cuatro procesos operativos: atención al paciente, gestión administrativa, control de recursos y supervisión. Las funciones principales son:
 
 \begin{enumerate}[label=\textbf{F\arabic*:},leftmargin=2cm]
-    \item \textbf{Gestionar pacientes y médicos:} registrar datos, especialidades, horarios, estados y relaciones necesarias para la atención.
+    \item \textbf{Gestionar pacientes:} registrar datos personales, contacto, antecedentes administrativos, estado y consentimiento de la persona que recibe la atención.
+    \item \textbf{Gestionar médicos:} registrar especialidad, horarios, estado profesional y disponibilidad del personal interno que presta el servicio.
     \item \textbf{Gestionar citas:} crear, consultar, modificar y cancelar citas; validar que el médico esté disponible y evitar solapamientos.
     \item \textbf{Gestionar la atención clínica:} registrar la consulta, el procedimiento realizado, la prescripción y los insumos consumidos.
     \item \textbf{Gestionar cobros y caja:} registrar el monto, medio de pago, estado del cobro y arqueo diario, respetando el cierre de caja.
@@ -22,7 +23,8 @@ Las funciones se agrupan en cuatro procesos operativos: atención al paciente, g
 
 \textbf{Secuencia general de funcionamiento:}
 \begin{enumerate}[leftmargin=1.1cm]
-    \item El paciente solicita una cita y recepción registra o localiza sus datos.
+    \item El paciente externo solicita una cita y recepción registra o localiza sus datos.
+    \item El sistema consulta la disponibilidad del médico interno antes de ofrecer el horario.
     \item El sistema consulta la agenda y rechaza los horarios que provocarían un solapamiento.
     \item El médico atiende la cita y registra la información clínica permitida.
     \item Recepción o caja registra el cobro y genera el comprobante.
@@ -46,7 +48,8 @@ Las funciones se agrupan en cuatro procesos operativos: atención al paciente, g
 
 \textbf{Componentes propuestos:}
 \begin{enumerate}[label=\textbf{C\arabic*:},leftmargin=2cm]
-    \item Pacientes y médicos.
+    \item Pacientes.
+    \item Médicos.
     \item Agenda y citas.
     \item Atención clínica.
     \item Cobros y caja.
@@ -67,7 +70,8 @@ Las funciones se agrupan en cuatro procesos operativos: atención al paciente, g
 \toprule
 \rowcolor{azulprincipal}\textcolor{white}{Componente} & \textcolor{white}{¿De qué se encarga?}\\
 \midrule
-Pacientes y médicos & Mantener expedientes administrativos, datos de contacto, especialidades, horarios, disponibilidad y estado de pacientes y profesionales. No modifica cobros ni información clínica restringida.\\
+Pacientes & Mantener los datos administrativos y de contacto del paciente externo, su estado, consentimiento y vínculo con las citas. No administra horarios médicos ni cobros.\\
+Médicos & Mantener los datos del médico interno, especialidad, horarios, disponibilidad y estado profesional. No modifica datos personales del paciente ni cobros.\\
 Agenda y citas & Crear y consultar citas, validar médico, fecha y hora, impedir solapamientos, controlar estados como Programada, Confirmada, Atendida y Cancelada, y conservar el historial.\\
 Atención clínica & Registrar la atención realizada por el médico, el procedimiento, las observaciones permitidas, la prescripción y los insumos consumidos durante la consulta.\\
 Cobros y caja & Registrar monto, fecha, medio y estado de pago; asociar el cobro a la cita; realizar el arqueo; y bloquear modificaciones después del cierre autorizado.\\
@@ -91,7 +95,8 @@ Una relación muestra cómo un componente utiliza información o servicios de ot
 
 \textbf{Relaciones principales:}
 \begin{enumerate}[label=\textbf{R\arabic*:},leftmargin=2cm]
-    \item Pacientes y médicos proporciona identidades y horarios a Agenda y citas.
+    \item Pacientes proporciona la identidad y los datos administrativos del paciente externo a Agenda y citas.
+    \item Médicos proporciona especialidad, horarios y disponibilidad del médico interno a Agenda y citas.
     \item Agenda y citas entrega la cita programada a Atención clínica y Cobros y caja.
     \item Atención clínica envía los consumos a Inventario y compras.
     \item Atención clínica consulta Medicamentos y prescripciones para validar recetas.
@@ -114,12 +119,12 @@ Una relación muestra cómo un componente utiliza información o servicios de ot
 
 \section{Incorporación de los usuarios}
 
-Los usuarios representan personas o roles que interactúan con el sistema. No todos tienen los mismos permisos, porque una clínica debe separar las tareas de recepción, atención médica, administración y supervisión.
+Los usuarios representan personas o roles que interactúan con el sistema. Se distingue entre entidades externas e internas: el paciente es externo a la organización y solicita o recibe servicios; el médico es un usuario interno de la clínica y presta el servicio bajo permisos profesionales. No todos tienen los mismos permisos, porque la clínica debe separar recepción, atención médica, administración y supervisión.
 
 \begin{enumerate}[label=\textbf{Usuario \arabic*:},leftmargin=2.4cm]
-    \item \textbf{Paciente:} solicita la cita, proporciona datos, recibe confirmaciones y consulta la información que la clínica le autorice.
+    \item \textbf{Paciente — entidad externa:} solicita la cita, proporciona sus datos, recibe confirmaciones y consulta únicamente la información que la clínica le autorice. No administra horarios, inventario ni usuarios.
     \item \textbf{Recepcionista:} registra pacientes, agenda y modifica citas, consulta disponibilidad, registra cobros autorizados y realiza el arqueo operativo.
-    \item \textbf{Médico:} consulta su agenda, registra la atención, emite prescripciones y declara los insumos utilizados.
+    \item \textbf{Médico — usuario interno:} consulta su agenda institucional, registra la atención, emite prescripciones y declara los insumos utilizados. No administra pacientes fuera de sus funciones clínicas ni modifica cobros.
     \item \textbf{Administrador:} administra catálogos, usuarios, permisos, inventario, compras, parámetros y reportes.
     \item \textbf{Gerente general:} consulta reportes consolidados, revisa indicadores y supervisa ingresos, agenda e inventario sin modificar registros clínicos.
 \end{enumerate}
@@ -143,7 +148,8 @@ La base de datos es el componente que conserva la información operativa y permi
 
 \textbf{Entidades principales:}
 \begin{itemize}
-    \item \textbf{Paciente y Médico:} datos administrativos y profesionales.
+    \item \textbf{Paciente:} entidad externa con datos personales, contacto, consentimiento y estado.
+    \item \textbf{Médico:} entidad interna con especialidad, horarios, disponibilidad y estado profesional.
     \item \textbf{Usuario y Rol:} credenciales y permisos.
     \item \textbf{Cita:} fecha, hora, médico, paciente, servicio y estado.
     \item \textbf{Atención y Prescripción:} resultado de la consulta y medicamentos prescritos.
@@ -183,7 +189,7 @@ La arquitectura propuesta organiza el sistema en capas para separar la interfaz,
 
 \textbf{Flujo de una operación ejemplo — agendar una cita:}
 \begin{enumerate}[leftmargin=1.1cm]
-    \item Recepción captura paciente, médico, fecha y hora en la interfaz.
+    \item Recepción captura el paciente externo, el médico interno, la fecha y la hora en la interfaz.
     \item La capa de aplicación solicita al dominio validar disponibilidad.
     \item El dominio aplica la regla de no solapamiento.
     \item Persistencia consulta y guarda la cita si la validación es correcta.
