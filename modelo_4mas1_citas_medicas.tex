@@ -1,0 +1,144 @@
+\section*{MODELO 4+1 DEL SISTEMA DE GESTIÓN DE CITAS MÉDICAS}
+\begin{center}
+\textit{Desarrollo de las prácticas de arquitectura a partir de los requerimientos de la clínica}
+\end{center}
+
+\section{Contexto y decisión de la herramienta CASE}
+
+El problema de referencia establece que una clínica desea automatizar el proceso de citas médicas. Los requerimientos principales son programar citas, consultar la agenda médica, modificar o cancelar citas, registrar pacientes y médicos, y conservar los diagnósticos para futuras consultas.
+
+Se seleccionó \textbf{diagrams.net (draw.io)} como herramienta CASE. Es adecuada para esta práctica porque permite crear diagramas de arquitectura, organizar el trabajo en páginas, editar los elementos visualmente, importar y exportar XML, y compartir el archivo mediante un repositorio. Como alternativa profesional podría utilizarse Visual Paradigm, especialmente si se necesitara una trazabilidad UML más formal; sin embargo, para la entrega actual draw.io es suficiente y facilita la evaluación del archivo.
+
+El archivo CASE contiene estas páginas:
+\begin{enumerate}
+    \item Arquitectura general.
+    \item Vista lógica.
+    \item Vista de procesos.
+    \item Vista de desarrollo.
+    \item Vista física.
+    \item Escenarios (+1).
+\end{enumerate}
+
+\section{Práctica 1: Vista lógica}
+
+\subsection*{Paso 1. Componentes funcionales}
+\begin{itemize}
+    \item Pacientes: entidad externa con datos personales, contacto, consentimiento y estado.
+    \item Médicos: entidad interna con especialidad, horarios, disponibilidad y estado profesional.
+    \item Agenda y citas: programación, consulta, modificación, cancelación y estados de citas.
+    \item Atención clínica: registro de diagnóstico, consulta, prescripción e insumos utilizados.
+    \item Cobros y caja: registro del pago y control del cierre diario.
+    \item Usuarios, roles y auditoría: autenticación, permisos y trazabilidad.
+    \item Reportes: consultas de agenda, atención, cobros y productividad.
+    \item Base de datos: persistencia de pacientes, médicos, citas, atenciones y cobros.
+\end{itemize}
+
+\subsection*{Paso 2. Responsabilidades}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}X}
+\toprule
+Componente & Responsabilidad\\
+\midrule
+Pacientes & Conservar los datos administrativos del paciente externo y su relación con las citas.\\
+Médicos & Mantener especialidad, horarios y disponibilidad del profesional interno.\\
+Agenda y citas & Validar disponibilidad, evitar solapamientos y controlar el estado de cada cita.\\
+Atención clínica & Registrar diagnóstico, consulta, prescripción e insumos consumidos.\\
+Cobros y caja & Asociar pagos con citas y controlar el arqueo diario.\\
+Usuarios y auditoría & Aplicar permisos y registrar operaciones sensibles.\\
+Reportes & Consultar información consolidada sin modificar transacciones.\\
+Base de datos & Guardar información y mantener relaciones e integridad.\\
+\bottomrule
+\end{tabularx}
+
+\subsection*{Paso 3. Relaciones}
+\begin{enumerate}
+    \item Pacientes proporciona sus datos a Agenda y citas.
+    \item Médicos proporciona horarios y disponibilidad a Agenda y citas.
+    \item Agenda y citas entrega la cita a Atención clínica y Cobros y caja.
+    \item Atención clínica registra diagnósticos y solicita actualizar consumos.
+    \item Cobros y caja registra el pago asociado a la cita.
+    \item Usuarios y auditoría autoriza las operaciones de cada rol.
+    \item Todos los componentes persistentes utilizan la Base de datos mediante servicios.
+\end{enumerate}
+
+\textbf{Respuesta a la práctica:} la vista lógica contiene los componentes necesarios para cubrir REQ01–REQ05. Paciente y Médico se modelan por separado porque el primero es una entidad externa y el segundo es un usuario interno con funciones profesionales.
+
+\section{Práctica 2: Vista de procesos}
+
+Se seleccionó el proceso \textbf{Programar y atender una cita médica}, porque integra los requerimientos principales.
+
+\begin{enumerate}
+    \item \textbf{Inicio:} el paciente solicita una cita y Recepción identifica o registra sus datos.
+    \item \textbf{Consulta:} Agenda y citas solicita a Médicos la disponibilidad para una fecha y hora.
+    \item \textbf{Validación:} se comprueba que el médico no tenga otra cita activa en el mismo intervalo.
+    \item \textbf{Registro:} si existe disponibilidad, se guarda la cita con estado Programada.
+    \item \textbf{Confirmación:} Recepción informa la fecha, hora y médico asignado al paciente.
+    \item \textbf{Atención:} el médico consulta su agenda, atiende al paciente y registra el diagnóstico.
+    \item \textbf{Cierre:} Cobros y caja registra el pago; Atención clínica actualiza el diagnóstico y los consumos.
+    \item \textbf{Finalización:} la cita cambia a Atendida y la información queda disponible para futuras consultas autorizadas.
+\end{enumerate}
+
+La información intercambiada incluye datos del paciente, disponibilidad del médico, fecha y hora, identificador de la cita, diagnóstico, prescripción, consumo, monto y estado del pago. Las decisiones principales son disponibilidad y autorización por rol.
+
+\section{Práctica 3: Vista de desarrollo}
+
+La vista de desarrollo organiza el software para que pueda ser implementado y mantenido por un equipo. Se propone una arquitectura por capas:
+
+\begin{enumerate}
+    \item \textbf{Presentación:} pantallas de pacientes, agenda, atención, cobros, reportes y administración.
+    \item \textbf{Lógica de negocio:} servicios de pacientes, médicos, citas, atención clínica, cobros, seguridad y reportes.
+    \item \textbf{Acceso a datos:} repositorios de pacientes, médicos, citas, atenciones, cobros, auditoría y reportes.
+\end{enumerate}
+
+Cada capa se comunica mediante interfaces definidas. La presentación no consulta directamente la base de datos; la lógica aplica las reglas y el acceso a datos se encarga de persistir la información. Esta organización permite que varios desarrolladores trabajen por módulos sin mezclar responsabilidades.
+
+\textbf{Respuesta a la práctica:} sí, el software puede mantenerse porque las funciones están separadas por dominio y por capa; una modificación en la pantalla de agenda no debería alterar la regla de no solapamiento ni la estructura de los repositorios.
+
+\section{Práctica 4: Vista física}
+
+Se propone una infraestructura centralizada para una clínica pequeña o mediana:
+
+\begin{enumerate}
+    \item \textbf{Usuarios y dispositivos cliente:} recepción, médicos, administración y gerencia utilizan computadoras o dispositivos móviles autorizados.
+    \item \textbf{Red segura:} conecta los dispositivos con el servicio de aplicación mediante HTTPS y control de acceso.
+    \item \textbf{Servidor de aplicación:} ejecuta la interfaz, los servicios de negocio, autenticación, agenda, atención, cobros y reportes.
+    \item \textbf{Servidor de base de datos:} conserva pacientes, médicos, citas, diagnósticos, pagos y auditoría.
+    \item \textbf{Servicio de respaldo y notificaciones:} genera copias de seguridad y puede enviar confirmaciones de citas.
+\end{enumerate}
+
+La separación permite centralizar la información, controlar permisos y facilitar respaldos. Para una primera versión, el servidor de aplicación y el de base de datos pueden estar en la misma red privada; para crecer, la base de datos debe aislarse en una subred protegida.
+
+\textbf{Respuesta a la práctica:} sí, la infraestructura permite ejecutar el sistema porque los usuarios acceden desde sus equipos al servidor de aplicación y este se comunica con una base de datos central.
+
+\section{Práctica 5: Vista de escenarios (+1)}
+
+Los escenarios conectan las otras vistas y permiten comprobar que la arquitectura soporta los requerimientos.
+
+\begin{enumerate}
+    \item \textbf{Programar cita:} el paciente solicita; Recepción consulta disponibilidad; Agenda valida; Base de datos guarda; el sistema confirma.
+    \item \textbf{Modificar o cancelar cita:} Recepción localiza la cita; el sistema valida permisos y estado; Agenda actualiza; Auditoría registra el cambio; se informa al paciente.
+    \item \textbf{Registrar diagnóstico:} el Médico consulta su agenda; abre la cita atendida; Atención clínica registra diagnóstico y prescripción; Base de datos conserva la información.
+    \item \textbf{Consultar agenda médica:} Médico o Recepción se autentica; Agenda consulta citas autorizadas; el sistema muestra el calendario sin exponer información innecesaria.
+    \item \textbf{Registrar cobro:} Recepción registra el monto y medio de pago; Cobros valida la cita; Base de datos guarda el cobro; Caja lo incluye en el arqueo.
+\end{enumerate}
+
+\section{Práctica 6: Integración y validación del modelo 4+1}
+
+La coherencia entre las vistas se valida así:
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}X}
+\toprule
+Pregunta & Respuesta y validación\\
+\midrule
+¿La lógica tiene los componentes necesarios? & Sí. Incluye Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos.\\
+¿Los componentes pueden interactuar? & Sí. Las relaciones de la vista lógica se convierten en mensajes y pasos de la vista de procesos.\\
+¿El software es mantenible? & Sí. La vista de desarrollo separa presentación, negocio y datos por módulos.\\
+¿La infraestructura permite ejecutar el sistema? & Sí. Los clientes se conectan al servidor de aplicación y este persiste en la base de datos.\\
+¿Los escenarios están soportados? & Sí. Programar, cancelar, atender, consultar y cobrar utilizan los componentes definidos en las demás vistas.\\
+\bottomrule
+\end{tabularx}
+
+No se están construyendo cinco sistemas distintos. Las cinco vistas describen el mismo sistema de citas médicas desde perspectivas diferentes y mantienen los mismos nombres: Paciente, Médico, Agenda, Atención clínica, Cobros, Seguridad, Reportes y Base de datos.
+
+\section{Entrega en la herramienta CASE}
+
+El archivo de draw.io se organizó en seis páginas para que el evaluador pueda revisar cada perspectiva de manera independiente. El archivo es editable y puede abrirse en diagrams.net mediante \textbf{File > Open From > Device} o importarse desde el repositorio.
