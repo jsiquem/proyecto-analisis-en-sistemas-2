@@ -3,25 +3,45 @@
 \textit{Desarrollo de las prácticas de arquitectura a partir de los requerimientos de la clínica}
 \end{center}
 
-\section{Contexto y decisión de la herramienta CASE}
+\section{Introducción al modelo 4+1}
 
-El problema de referencia establece que una clínica desea automatizar el proceso de citas médicas. Los requerimientos principales son programar citas, consultar la agenda médica, modificar o cancelar citas, registrar pacientes y médicos, y conservar los diagnósticos para futuras consultas.
+Antes se respondió a la pregunta:
 
-Se seleccionó \textbf{diagrams.net (draw.io)} como herramienta CASE. Es adecuada para esta práctica porque permite crear diagramas de arquitectura, organizar el trabajo en páginas, editar los elementos visualmente, importar y exportar XML, y compartir el archivo mediante un repositorio. Como alternativa profesional podría utilizarse Visual Paradigm, especialmente si se necesitara una trazabilidad UML más formal; sin embargo, para la entrega actual draw.io es suficiente y facilita la evaluación del archivo.
+\begin{quote}
+\textbf{¿Cómo podemos organizar nuestro sistema?}
+\end{quote}
 
-El archivo CASE contiene estas páginas:
-\begin{enumerate}
-    \item Arquitectura general.
-    \item Vista lógica.
-    \item Vista de procesos.
-    \item Vista de desarrollo.
-    \item Vista física.
-    \item Escenarios (+1).
-\end{enumerate}
+Para el sistema de gestión de citas médicas se identificaron componentes, responsabilidades, relaciones, capas, base de datos y usuarios. Sin embargo, esta arquitectura no muestra absolutamente todo lo que necesitamos conocer. Diferentes participantes hacen preguntas distintas:
 
-\section{Práctica 1: Vista lógica}
+\begin{itemize}
+    \item El gerente podría preguntar: \textbf{¿Qué funcionalidades importantes tiene el sistema?}
+    \item El desarrollador podría preguntar: \textbf{¿Cómo está organizado el software?}
+    \item El administrador de infraestructura podría preguntar: \textbf{¿En qué servidores se ejecutará?}
+    \item El responsable técnico podría preguntar: \textbf{¿Qué procesos se ejecutan simultáneamente?}
+\end{itemize}
 
-\subsection*{Paso 1. Componentes funcionales}
+Por eso se utilizan diferentes perspectivas de una misma arquitectura. El Modelo 4+1, propuesto por Philippe Kruchten, describe la arquitectura mediante cinco perspectivas: vista lógica, vista de procesos, vista de desarrollo, vista física y vista de escenarios (+1).
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.23\textwidth}X}
+\toprule
+Vista & Pregunta principal\\
+\midrule
+Lógica & ¿Qué partes funcionales tiene el sistema?\\
+Procesos & ¿Cómo se ejecutan e interactúan los procesos?\\
+Desarrollo & ¿Cómo está organizado el software para desarrollarlo?\\
+Física & ¿Dónde se ejecuta el sistema?\\
+Escenarios & ¿Qué situaciones importantes debe poder realizar el sistema?\\
+\bottomrule
+\end{tabularx}
+
+\section{PRACTICA 1: Vista lógica}
+
+\textbf{Cada uno debe tomar la arquitectura de la Clase 1 y responder:}
+
+\subsection*{Paso 1}
+\textbf{Identifique los principales componentes funcionales.}
+
+Para el sistema de gestión de citas médicas se identifican:
 \begin{itemize}
     \item Pacientes: entidad externa con datos personales, contacto, consentimiento y estado.
     \item Médicos: entidad interna con especialidad, horarios, disponibilidad y estado profesional.
@@ -33,7 +53,9 @@ El archivo CASE contiene estas páginas:
     \item Base de datos: persistencia de pacientes, médicos, citas, atenciones y cobros.
 \end{itemize}
 
-\subsection*{Paso 2. Responsabilidades}
+\subsection*{Paso 2}
+\textbf{Escriba la responsabilidad de cada componente.}
+
 \begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}X}
 \toprule
 Componente & Responsabilidad\\
@@ -49,7 +71,9 @@ Base de datos & Guardar información y mantener relaciones e integridad.\\
 \bottomrule
 \end{tabularx}
 
-\subsection*{Paso 3. Relaciones}
+\subsection*{Paso 3}
+\textbf{Determine qué componentes se relacionan.}
+
 \begin{enumerate}
     \item Pacientes proporciona sus datos a Agenda y citas.
     \item Médicos proporciona horarios y disponibilidad a Agenda y citas.
@@ -60,85 +84,200 @@ Base de datos & Guardar información y mantener relaciones e integridad.\\
     \item Todos los componentes persistentes utilizan la Base de datos mediante servicios.
 \end{enumerate}
 
-\textbf{Respuesta a la práctica:} la vista lógica contiene los componentes necesarios para cubrir REQ01–REQ05. Paciente y Médico se modelan por separado porque el primero es una entidad externa y el segundo es un usuario interno con funciones profesionales.
+\subsection*{Paso 4}
+\textbf{Construya la Vista Lógica.}
 
-\section{Práctica 2: Vista de procesos}
+La vista lógica se construye con los componentes y relaciones anteriores. Paciente y Médico se representan por separado porque cumplen funciones diferentes: el paciente es una entidad externa que solicita o recibe el servicio; el médico es un usuario interno que presta el servicio profesional.
 
-Se seleccionó el proceso \textbf{Programar y atender una cita médica}, porque integra los requerimientos principales.
+\subsection*{Paso 5}
+\textbf{¿Cómo está organizado funcionalmente nuestro Sistema de Control de Inventarios?}
 
+Para este proyecto, la respuesta adaptada es: el sistema está organizado funcionalmente como un sistema de gestión de citas médicas. Pacientes solicita o recibe el servicio; Médicos ofrece disponibilidad y registra la atención; Agenda y citas coordina la programación; Atención clínica conserva el diagnóstico; Cobros y caja registra el pago; Usuarios y auditoría protege el acceso; Reportes consulta la información y Base de datos conserva las relaciones.
+
+\section{PRACTICA 2: Vista de procesos}
+
+La vista lógica nos decía: \textbf{¿Qué partes tiene el sistema?} La vista de procesos pregunta: \textbf{¿Cómo se ejecutan los procesos y cómo interactúan durante la ejecución?}
+
+\textbf{Cada uno seleccione un proceso importante.}
+
+\textbf{Recomendación: Registrar Venta}
+
+Para el sistema de la clínica se selecciona como proceso equivalente \textbf{Programar y atender una cita médica}, porque integra REQ01, REQ02, REQ03, REQ04 y REQ05.
+
+\textbf{Luego deberá representar:}
 \begin{enumerate}
-    \item \textbf{Inicio:} el paciente solicita una cita y Recepción identifica o registra sus datos.
-    \item \textbf{Consulta:} Agenda y citas solicita a Médicos la disponibilidad para una fecha y hora.
-    \item \textbf{Validación:} se comprueba que el médico no tenga otra cita activa en el mismo intervalo.
-    \item \textbf{Registro:} si existe disponibilidad, se guarda la cita con estado Programada.
-    \item \textbf{Confirmación:} Recepción informa la fecha, hora y médico asignado al paciente.
-    \item \textbf{Atención:} el médico consulta su agenda, atiende al paciente y registra el diagnóstico.
-    \item \textbf{Cierre:} Cobros y caja registra el pago; Atención clínica actualiza el diagnóstico y los consumos.
-    \item \textbf{Finalización:} la cita cambia a Atendida y la información queda disponible para futuras consultas autorizadas.
+    \item \textbf{quién inicia el proceso:} el paciente solicita la cita y Recepción inicia el registro.
+    \item \textbf{qué proceso se ejecuta:} Agenda y citas consulta la disponibilidad del médico.
+    \item \textbf{qué componentes participan:} Pacientes, Médicos, Agenda y citas, Atención clínica, Cobros y caja, Usuarios y auditoría y Base de datos.
+    \item \textbf{qué información intercambian:} datos del paciente, fecha, hora, médico disponible, identificador de cita, diagnóstico, prescripción, consumo y pago.
+    \item \textbf{qué proceso se ejecuta después:} si el horario está disponible, se guarda la cita; después el médico registra el diagnóstico y caja registra el pago.
+    \item \textbf{cómo termina:} la cita cambia a Atendida y la información queda disponible para futuras consultas autorizadas.
 \end{enumerate}
 
-La información intercambiada incluye datos del paciente, disponibilidad del médico, fecha y hora, identificador de la cita, diagnóstico, prescripción, consumo, monto y estado del pago. Las decisiones principales son disponibilidad y autorización por rol.
+La validación de disponibilidad evita que un médico tenga dos citas activas en el mismo intervalo. Si no existe disponibilidad, el sistema informa el conflicto y permite seleccionar otro horario.
 
-\section{Práctica 3: Vista de desarrollo}
+\section{PRACTICA 3: Vista de desarrollo}
 
-La vista de desarrollo organiza el software para que pueda ser implementado y mantenido por un equipo. Se propone una arquitectura por capas:
+\textbf{¿Cómo organizaremos el software para poder desarrollarlo y mantenerlo?}
 
-\begin{enumerate}
-    \item \textbf{Presentación:} pantallas de pacientes, agenda, atención, cobros, reportes y administración.
-    \item \textbf{Lógica de negocio:} servicios de pacientes, médicos, citas, atención clínica, cobros, seguridad y reportes.
-    \item \textbf{Acceso a datos:} repositorios de pacientes, médicos, citas, atenciones, cobros, auditoría y reportes.
-\end{enumerate}
+La vista de desarrollo, también conocida como vista de implementación, representa cómo está organizado el software desde la perspectiva del desarrollo y mantenimiento.
 
-Cada capa se comunica mediante interfaces definidas. La presentación no consulta directamente la base de datos; la lógica aplica las reglas y el acceso a datos se encarga de persistir la información. Esta organización permite que varios desarrolladores trabajen por módulos sin mezclar responsabilidades.
+\textbf{Cada uno deberá construir una estructura similar a:}
 
-\textbf{Respuesta a la práctica:} sí, el software puede mantenerse porque las funciones están separadas por dominio y por capa; una modificación en la pantalla de agenda no debería alterar la regla de no solapamiento ni la estructura de los repositorios.
+\begin{quote}
+Sistema de Inventarios\par
+Presentación\par
+Lógica de negocio\par
+Acceso a datos
+\end{quote}
 
-\section{Práctica 4: Vista física}
-
-Se propone una infraestructura centralizada para una clínica pequeña o mediana:
-
-\begin{enumerate}
-    \item \textbf{Usuarios y dispositivos cliente:} recepción, médicos, administración y gerencia utilizan computadoras o dispositivos móviles autorizados.
-    \item \textbf{Red segura:} conecta los dispositivos con el servicio de aplicación mediante HTTPS y control de acceso.
-    \item \textbf{Servidor de aplicación:} ejecuta la interfaz, los servicios de negocio, autenticación, agenda, atención, cobros y reportes.
-    \item \textbf{Servidor de base de datos:} conserva pacientes, médicos, citas, diagnósticos, pagos y auditoría.
-    \item \textbf{Servicio de respaldo y notificaciones:} genera copias de seguridad y puede enviar confirmaciones de citas.
-\end{enumerate}
-
-La separación permite centralizar la información, controlar permisos y facilitar respaldos. Para una primera versión, el servidor de aplicación y el de base de datos pueden estar en la misma red privada; para crecer, la base de datos debe aislarse en una subred protegida.
-
-\textbf{Respuesta a la práctica:} sí, la infraestructura permite ejecutar el sistema porque los usuarios acceden desde sus equipos al servidor de aplicación y este se comunica con una base de datos central.
-
-\section{Práctica 5: Vista de escenarios (+1)}
-
-Los escenarios conectan las otras vistas y permiten comprobar que la arquitectura soporta los requerimientos.
+Para el sistema de citas médicas la estructura equivalente es:
 
 \begin{enumerate}
-    \item \textbf{Programar cita:} el paciente solicita; Recepción consulta disponibilidad; Agenda valida; Base de datos guarda; el sistema confirma.
-    \item \textbf{Modificar o cancelar cita:} Recepción localiza la cita; el sistema valida permisos y estado; Agenda actualiza; Auditoría registra el cambio; se informa al paciente.
-    \item \textbf{Registrar diagnóstico:} el Médico consulta su agenda; abre la cita atendida; Atención clínica registra diagnóstico y prescripción; Base de datos conserva la información.
-    \item \textbf{Consultar agenda médica:} Médico o Recepción se autentica; Agenda consulta citas autorizadas; el sistema muestra el calendario sin exponer información innecesaria.
-    \item \textbf{Registrar cobro:} Recepción registra el monto y medio de pago; Cobros valida la cita; Base de datos guarda el cobro; Caja lo incluye en el arqueo.
+    \item \textbf{Presentación}
+    \begin{itemize}
+        \item Pacientes.
+        \item Médicos.
+        \item Agenda y citas.
+        \item Atención clínica.
+        \item Cobros.
+        \item Reportes.
+    \end{itemize}
+    \item \textbf{Lógica de negocio}
+    \begin{itemize}
+        \item Gestión de pacientes.
+        \item Gestión de médicos y disponibilidad.
+        \item Gestión de citas.
+        \item Gestión de atención y diagnósticos.
+        \item Gestión de cobros.
+        \item Seguridad y auditoría.
+    \end{itemize}
+    \item \textbf{Acceso a datos}
+    \begin{itemize}
+        \item Repositorio de pacientes y médicos.
+        \item Repositorio de citas y agenda.
+        \item Repositorio de atenciones y diagnósticos.
+        \item Repositorio de cobros y auditoría.
+    \end{itemize}
 \end{enumerate}
 
-\section{Práctica 6: Integración y validación del modelo 4+1}
+La presentación no consulta directamente la base de datos. La lógica de negocio aplica las reglas, como no solapar citas y controlar permisos. El acceso a datos persiste la información. Esta organización permite que los cambios estén controlados, las responsabilidades estén separadas y el código sea mantenible.
 
-La coherencia entre las vistas se valida así:
+\section{PRACTICA 4: Vista física}
 
-\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}X}
-\toprule
-Pregunta & Respuesta y validación\\
-\midrule
-¿La lógica tiene los componentes necesarios? & Sí. Incluye Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos.\\
-¿Los componentes pueden interactuar? & Sí. Las relaciones de la vista lógica se convierten en mensajes y pasos de la vista de procesos.\\
-¿El software es mantenible? & Sí. La vista de desarrollo separa presentación, negocio y datos por módulos.\\
-¿La infraestructura permite ejecutar el sistema? & Sí. Los clientes se conectan al servidor de aplicación y este persiste en la base de datos.\\
-¿Los escenarios están soportados? & Sí. Programar, cancelar, atender, consultar y cobrar utilizan los componentes definidos en las demás vistas.\\
-\bottomrule
-\end{tabularx}
+\textbf{¿Dónde se ejecutará nuestro Sistema de Control de Inventarios?}
 
-No se están construyendo cinco sistemas distintos. Las cinco vistas describen el mismo sistema de citas médicas desde perspectivas diferentes y mantienen los mismos nombres: Paciente, Médico, Agenda, Atención clínica, Cobros, Seguridad, Reportes y Base de datos.
+Para este proyecto, la respuesta adaptada es que el Sistema de Gestión de Citas Médicas se ejecutará en una infraestructura centralizada:
 
-\section{Entrega en la herramienta CASE}
+\begin{enumerate}
+    \item Usuarios: recepción, médicos, administración y gerencia.
+    \item Computadoras o dispositivos móviles autorizados.
+    \item Red segura mediante HTTPS y control de acceso.
+    \item Servidor de aplicación que ejecuta la interfaz y los servicios de negocio.
+    \item Servidor de base de datos que conserva pacientes, médicos, citas, diagnósticos, pagos y auditoría.
+    \item Servicio de respaldo y notificaciones para copias de seguridad y confirmaciones.
+\end{enumerate}
 
-El archivo de draw.io se organizó en seis páginas para que el evaluador pueda revisar cada perspectiva de manera independiente. El archivo es editable y puede abrirse en diagrams.net mediante \textbf{File > Open From > Device} o importarse desde el repositorio.
+La propuesta se justifica porque centraliza la información de la clínica, facilita el mantenimiento, permite aplicar permisos y simplifica los respaldos. La base de datos puede permanecer en una red privada separada del servidor de aplicación.
+
+\section{PRACTICA 5: Vista de escenarios (+1)}
+
+La pregunta es: \textbf{¿Qué situaciones importantes debe poder realizar el sistema?}
+
+Un escenario representa una situación concreta en la que el sistema es utilizado. Para la clínica se seleccionan los siguientes escenarios:
+
+\begin{enumerate}
+    \item Programar una cita.
+    \item Modificar o cancelar una cita.
+    \item Registrar un diagnóstico.
+    \item Consultar la agenda médica.
+    \item Registrar un cobro.
+\end{enumerate}
+
+\textbf{Ahora integre las cinco perspectivas.}
+
+\subsection*{Paso 1 — Vista lógica}
+\textbf{Identificar:}
+\begin{itemize}
+    \item componentes: Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos;
+    \item módulos: presentación, negocio y acceso a datos;
+    \item relaciones: datos del paciente, disponibilidad médica, citas, diagnósticos y pagos.
+\end{itemize}
+
+\subsection*{Paso 2 — Vista de procesos}
+\textbf{Seleccionar un proceso importante.}
+
+\textbf{Recomendado: Registrar Venta}
+
+Para el sistema médico se utiliza Programar y atender una cita, representando inicio, procesos, interacción, información y finalización. El paciente inicia; Recepción registra; Agenda valida; Médicos proporciona disponibilidad; Atención registra diagnóstico; Cobros registra el pago y la Base de datos conserva el resultado.
+
+\subsection*{Paso 3 — Vista de desarrollo}
+\textbf{Representar:}
+
+\begin{quote}
+Presentación\par
+↓\par
+Negocio\par
+↓\par
+Datos
+\end{quote}
+
+Se colocan los módulos de pacientes, médicos, agenda, atención, cobros, seguridad, reportes y repositorios.
+
+\subsection*{Paso 4 — Vista física}
+\textbf{Representar:}
+
+\begin{quote}
+Usuarios\par
+↓\par
+Equipos\par
+↓\par
+Servidor\par
+↓\par
+Base de datos
+\end{quote}
+
+\subsection*{Paso 5 — Escenarios}
+\textbf{Seleccionar mínimo 3 escenarios importantes.}
+
+Se seleccionan cinco: Programar cita, Modificar o cancelar cita, Registrar diagnóstico, Consultar agenda y Registrar cobro.
+
+\textbf{Responder estas preguntas:}
+
+\begin{enumerate}
+    \item \textbf{Lógica: ¿Nuestra arquitectura tiene todos los componentes necesarios?} Sí. Incluye Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos.
+    \item \textbf{Procesos: ¿Los componentes pueden interactuar para ejecutar nuestros procesos?} Sí. Las relaciones de la vista lógica se convierten en mensajes y pasos del proceso de citas.
+    \item \textbf{Desarrollo: ¿Podemos organizar el software de manera que sea mantenible?} Sí. La vista de desarrollo separa presentación, negocio y datos por módulos.
+    \item \textbf{Física: ¿La infraestructura propuesta permite ejecutar el sistema?} Sí. Los usuarios se conectan desde sus equipos al servidor de aplicación y este utiliza una base de datos central.
+    \item \textbf{Escenarios: ¿Nuestra arquitectura puede soportar los casos de uso importantes?} Sí. Programar, cancelar, atender, consultar y cobrar utilizan los componentes definidos en las demás vistas.
+\end{enumerate}
+
+Si alguna respuesta es NO, identificar qué parte de la arquitectura necesitan revisar. En esta propuesta no se identifica una respuesta negativa, porque las cinco vistas mantienen los mismos componentes y cuentan una historia coherente del sistema de citas médicas.
+
+\section{PRACTICA 6}
+
+\textbf{Cada uno haga su propia investigación de la herramienta CASE que puede utilizar para crear un archivo que le permita crear la arquitectura de nuestra práctica inventario y luego pueda compartir el enlace para ser evaluado.}
+
+La herramienta seleccionada es diagrams.net (draw.io). Es adecuada porque permite organizar el trabajo en páginas, editar diagramas, importar y exportar XML y compartir el archivo mediante GitHub.
+
+El archivo CASE contiene:
+\begin{itemize}
+    \item Página 1 → Arquitectura General.
+    \item Página 2 → Vista Lógica.
+    \item Página 3 → Vista de Procesos.
+    \item Página 4 → Vista de Desarrollo.
+    \item Página 5 → Vista Física.
+    \item Página 6 → Escenarios.
+\end{itemize}
+
+El criterio más importante es la coherencia. No tendría sentido que en la vista lógica aparezca un módulo de Agenda, pero en la vista de procesos nunca participe Agenda y en los escenarios tampoco aparezca. En este trabajo Agenda aparece en la vista lógica, participa en el proceso de programar citas, se organiza en Presentación y Negocio, se ejecuta en el servidor de aplicación y participa en los escenarios de programación, modificación y consulta.
+
+\section{Entrega y URL de evaluación}
+
+El archivo CASE multipágina es editable y puede abrirse en diagrams.net mediante \textbf{File > Open From > Device}. También puede revisarse desde el repositorio mediante la siguiente URL:
+
+\begin{quote}
+\url{https://github.com/jsiquem/proyecto-analisis-en-sistemas-2/blob/main/modelo_4mas1_citas_medicas.drawio}
+\end{quote}
+
+Las cinco vistas describen el mismo sistema desde perspectivas diferentes: la vista lógica muestra qué partes tiene, la vista de procesos muestra cómo trabajan, la vista de desarrollo muestra cómo se organiza el software, la vista física muestra dónde se ejecuta y los escenarios muestran qué situaciones importantes soporta.
