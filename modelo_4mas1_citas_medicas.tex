@@ -1,4 +1,8 @@
 \begingroup\sffamily\renewcommand{\arraystretch}{1.25}
+
+\newcommand{\bloqueflujo}[1]{\fcolorbox{azuloscuro}{azulclaro}{\parbox{0.48\linewidth}{\centering\textbf{#1}}}}
+
+\newcommand{\flechaflujo}{\textcolor{azuloscuro}{\Large$\downarrow$}}
 \section*{MODELO 4+1 DEL SISTEMA DE GESTIÓN DE CITAS MÉDICAS}
 \begin{center}
 \textit{Desarrollo de las prácticas de arquitectura a partir de los requerimientos de la clínica}
@@ -127,12 +131,15 @@ La vista de desarrollo, también conocida como vista de implementación, represe
 
 \textbf{Cada uno deberá construir una estructura similar a:}
 
-\begin{quote}
-Sistema de Inventarios\par
-Presentación\par
-Lógica de negocio\par
-Acceso a datos
-\end{quote}
+\begin{center}
+\bloqueflujo{Sistema de Inventarios}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Presentación}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Lógica de negocio}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Acceso a datos}
+\end{center}
 
 Para el sistema de citas médicas la estructura equivalente es:
 
@@ -217,28 +224,28 @@ Para el sistema médico se utiliza Programar y atender una cita, representando i
 \subsection*{Paso 3 — Vista de desarrollo}
 \textbf{Representar:}
 
-\begin{quote}
-Presentación\par
-↓\par
-Negocio\par
-↓\par
-Datos
-\end{quote}
+\begin{center}
+\bloqueflujo{Presentación}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Negocio}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Datos}
+\end{center}
 
 Se colocan los módulos de pacientes, médicos, agenda, atención, cobros, seguridad, reportes y repositorios.
 
 \subsection*{Paso 4 — Vista física}
 \textbf{Representar:}
 
-\begin{quote}
-Usuarios\par
-↓\par
-Equipos\par
-↓\par
-Servidor\par
-↓\par
-Base de datos
-\end{quote}
+\begin{center}
+\bloqueflujo{Usuarios}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Equipos}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Servidor}\\[3pt]
+\flechaflujo\\[3pt]
+\bloqueflujo{Base de datos}
+\end{center}
 
 \subsection*{Paso 5 — Escenarios}
 \textbf{Seleccionar mínimo 3 escenarios importantes.}
