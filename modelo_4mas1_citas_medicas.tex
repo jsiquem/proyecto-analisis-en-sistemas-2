@@ -1,3 +1,4 @@
+\begingroup\sffamily\renewcommand{\arraystretch}{1.25}
 \section*{MODELO 4+1 DEL SISTEMA DE GESTIÓN DE CITAS MÉDICAS}
 \begin{center}
 \textit{Desarrollo de las prácticas de arquitectura a partir de los requerimientos de la clínica}
@@ -8,35 +9,36 @@
 Antes se respondió a la pregunta:
 
 \begin{quote}
-\textbf{¿Cómo podemos organizar nuestro sistema?}
+\textbf{\textquestiondown{}Cómo podemos organizar nuestro sistema?}
 \end{quote}
 
 Para el sistema de gestión de citas médicas se identificaron componentes, responsabilidades, relaciones, capas, base de datos y usuarios. Sin embargo, esta arquitectura no muestra absolutamente todo lo que necesitamos conocer. Diferentes participantes hacen preguntas distintas:
 
 \begin{itemize}
-    \item El gerente podría preguntar: \textbf{¿Qué funcionalidades importantes tiene el sistema?}
-    \item El desarrollador podría preguntar: \textbf{¿Cómo está organizado el software?}
-    \item El administrador de infraestructura podría preguntar: \textbf{¿En qué servidores se ejecutará?}
-    \item El responsable técnico podría preguntar: \textbf{¿Qué procesos se ejecutan simultáneamente?}
+    \item El gerente podría preguntar: \textbf{\textquestiondown{}Qué funcionalidades importantes tiene el sistema?}
+    \item El desarrollador podría preguntar: \textbf{\textquestiondown{}Cómo está organizado el software?}
+    \item El administrador de infraestructura podría preguntar: \textbf{\textquestiondown{}En qué servidores se ejecutará?}
+    \item El responsable técnico podría preguntar: \textbf{\textquestiondown{}Qué procesos se ejecutan simultáneamente?}
 \end{itemize}
 
 Por eso se utilizan diferentes perspectivas de una misma arquitectura. El Modelo 4+1, propuesto por Philippe Kruchten, describe la arquitectura mediante cinco perspectivas: vista lógica, vista de procesos, vista de desarrollo, vista física y vista de escenarios (+1).
 
+\rowcolors{2}{grisclaro}{white}
 \begin{tabularx}{\textwidth}{>{\bfseries}p{0.23\textwidth}X}
 \toprule
-Vista & Pregunta principal\\
+\rowcolor{azuloscuro}\textcolor{white}{Vista} & \textcolor{white}{Pregunta principal}\\
 \midrule
-Lógica & ¿Qué partes funcionales tiene el sistema?\\
-Procesos & ¿Cómo se ejecutan e interactúan los procesos?\\
-Desarrollo & ¿Cómo está organizado el software para desarrollarlo?\\
-Física & ¿Dónde se ejecuta el sistema?\\
-Escenarios & ¿Qué situaciones importantes debe poder realizar el sistema?\\
+Lógica & \textquestiondown{}Qué partes funcionales tiene el sistema?\\
+Procesos & \textquestiondown{}Cómo se ejecutan e interactúan los procesos?\\
+Desarrollo & \textquestiondown{}Cómo está organizado el software para desarrollarlo?\\
+Física & \textquestiondown{}Dónde se ejecuta el sistema?\\
+Escenarios & \textquestiondown{}Qué situaciones importantes debe poder realizar el sistema?\\
 \bottomrule
 \end{tabularx}
 
 \section{PRACTICA 1: Vista lógica}
 
-\textbf{Cada uno debe tomar la arquitectura de la Clase 1 y responder:}
+\colorbox{azulclaro}{\parbox{0.96\linewidth}{\textbf{Cada uno debe tomar la arquitectura de la Clase 1 y responder:}}}
 
 \subsection*{Paso 1}
 \textbf{Identifique los principales componentes funcionales.}
@@ -56,9 +58,10 @@ Para el sistema de gestión de citas médicas se identifican:
 \subsection*{Paso 2}
 \textbf{Escriba la responsabilidad de cada componente.}
 
+\rowcolors{2}{grisclaro}{white}
 \begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}X}
 \toprule
-Componente & Responsabilidad\\
+\rowcolor{azuloscuro}\textcolor{white}{Componente} & \textcolor{white}{Responsabilidad}\\
 \midrule
 Pacientes & Conservar los datos administrativos del paciente externo y su relación con las citas.\\
 Médicos & Mantener especialidad, horarios y disponibilidad del profesional interno.\\
@@ -90,13 +93,13 @@ Base de datos & Guardar información y mantener relaciones e integridad.\\
 La vista lógica se construye con los componentes y relaciones anteriores. Paciente y Médico se representan por separado porque cumplen funciones diferentes: el paciente es una entidad externa que solicita o recibe el servicio; el médico es un usuario interno que presta el servicio profesional.
 
 \subsection*{Paso 5}
-\textbf{¿Cómo está organizado funcionalmente nuestro Sistema de Control de Inventarios?}
+\textbf{\textquestiondown{}Cómo está organizado funcionalmente nuestro Sistema de Control de Inventarios?}
 
 Para este proyecto, la respuesta adaptada es: el sistema está organizado funcionalmente como un sistema de gestión de citas médicas. Pacientes solicita o recibe el servicio; Médicos ofrece disponibilidad y registra la atención; Agenda y citas coordina la programación; Atención clínica conserva el diagnóstico; Cobros y caja registra el pago; Usuarios y auditoría protege el acceso; Reportes consulta la información y Base de datos conserva las relaciones.
 
 \section{PRACTICA 2: Vista de procesos}
 
-La vista lógica nos decía: \textbf{¿Qué partes tiene el sistema?} La vista de procesos pregunta: \textbf{¿Cómo se ejecutan los procesos y cómo interactúan durante la ejecución?}
+La vista lógica nos decía: \textbf{\textquestiondown{}Qué partes tiene el sistema?} La vista de procesos pregunta: \textbf{\textquestiondown{}Cómo se ejecutan los procesos y cómo interactúan durante la ejecución?}
 
 \textbf{Cada uno seleccione un proceso importante.}
 
@@ -104,7 +107,7 @@ La vista lógica nos decía: \textbf{¿Qué partes tiene el sistema?} La vista d
 
 Para el sistema de la clínica se selecciona como proceso equivalente \textbf{Programar y atender una cita médica}, porque integra REQ01, REQ02, REQ03, REQ04 y REQ05.
 
-\textbf{Luego deberá representar:}
+\colorbox{azulclaro}{\parbox{0.96\linewidth}{\textbf{Luego deberá representar:}}}
 \begin{enumerate}
     \item \textbf{quién inicia el proceso:} el paciente solicita la cita y Recepción inicia el registro.
     \item \textbf{qué proceso se ejecuta:} Agenda y citas consulta la disponibilidad del médico.
@@ -118,7 +121,7 @@ La validación de disponibilidad evita que un médico tenga dos citas activas en
 
 \section{PRACTICA 3: Vista de desarrollo}
 
-\textbf{¿Cómo organizaremos el software para poder desarrollarlo y mantenerlo?}
+\textbf{\textquestiondown{}Cómo organizaremos el software para poder desarrollarlo y mantenerlo?}
 
 La vista de desarrollo, también conocida como vista de implementación, representa cómo está organizado el software desde la perspectiva del desarrollo y mantenimiento.
 
@@ -165,7 +168,7 @@ La presentación no consulta directamente la base de datos. La lógica de negoci
 
 \section{PRACTICA 4: Vista física}
 
-\textbf{¿Dónde se ejecutará nuestro Sistema de Control de Inventarios?}
+\textbf{\textquestiondown{}Dónde se ejecutará nuestro Sistema de Control de Inventarios?}
 
 Para este proyecto, la respuesta adaptada es que el Sistema de Gestión de Citas Médicas se ejecutará en una infraestructura centralizada:
 
@@ -182,7 +185,7 @@ La propuesta se justifica porque centraliza la información de la clínica, faci
 
 \section{PRACTICA 5: Vista de escenarios (+1)}
 
-La pregunta es: \textbf{¿Qué situaciones importantes debe poder realizar el sistema?}
+La pregunta es: \textbf{\textquestiondown{}Qué situaciones importantes debe poder realizar el sistema?}
 
 Un escenario representa una situación concreta en la que el sistema es utilizado. Para la clínica se seleccionan los siguientes escenarios:
 
@@ -245,11 +248,11 @@ Se seleccionan cinco: Programar cita, Modificar o cancelar cita, Registrar diagn
 \textbf{Responder estas preguntas:}
 
 \begin{enumerate}
-    \item \textbf{Lógica: ¿Nuestra arquitectura tiene todos los componentes necesarios?} Sí. Incluye Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos.
-    \item \textbf{Procesos: ¿Los componentes pueden interactuar para ejecutar nuestros procesos?} Sí. Las relaciones de la vista lógica se convierten en mensajes y pasos del proceso de citas.
-    \item \textbf{Desarrollo: ¿Podemos organizar el software de manera que sea mantenible?} Sí. La vista de desarrollo separa presentación, negocio y datos por módulos.
-    \item \textbf{Física: ¿La infraestructura propuesta permite ejecutar el sistema?} Sí. Los usuarios se conectan desde sus equipos al servidor de aplicación y este utiliza una base de datos central.
-    \item \textbf{Escenarios: ¿Nuestra arquitectura puede soportar los casos de uso importantes?} Sí. Programar, cancelar, atender, consultar y cobrar utilizan los componentes definidos en las demás vistas.
+    \item \textbf{Lógica: \textquestiondown{}Nuestra arquitectura tiene todos los componentes necesarios?} Sí. Incluye Pacientes, Médicos, Agenda, Atención, Cobros, Seguridad, Reportes y Base de datos.
+    \item \textbf{Procesos: \textquestiondown{}Los componentes pueden interactuar para ejecutar nuestros procesos?} Sí. Las relaciones de la vista lógica se convierten en mensajes y pasos del proceso de citas.
+    \item \textbf{Desarrollo: \textquestiondown{}Podemos organizar el software de manera que sea mantenible?} Sí. La vista de desarrollo separa presentación, negocio y datos por módulos.
+    \item \textbf{Física: \textquestiondown{}La infraestructura propuesta permite ejecutar el sistema?} Sí. Los usuarios se conectan desde sus equipos al servidor de aplicación y este utiliza una base de datos central.
+    \item \textbf{Escenarios: \textquestiondown{}Nuestra arquitectura puede soportar los casos de uso importantes?} Sí. Programar, cancelar, atender, consultar y cobrar utilizan los componentes definidos en las demás vistas.
 \end{enumerate}
 
 Si alguna respuesta es NO, identificar qué parte de la arquitectura necesitan revisar. En esta propuesta no se identifica una respuesta negativa, porque las cinco vistas mantienen los mismos componentes y cuentan una historia coherente del sistema de citas médicas.
@@ -281,3 +284,4 @@ El archivo CASE multipágina es editable y puede abrirse en diagrams.net mediant
 \end{quote}
 
 Las cinco vistas describen el mismo sistema desde perspectivas diferentes: la vista lógica muestra qué partes tiene, la vista de procesos muestra cómo trabajan, la vista de desarrollo muestra cómo se organiza el software, la vista física muestra dónde se ejecuta y los escenarios muestran qué situaciones importantes soporta.
+\endgroup
